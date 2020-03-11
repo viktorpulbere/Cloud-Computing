@@ -1,0 +1,27 @@
+{
+  "name": "tema2",
+  "version": "1.0.0",
+  "description": "An application that provides a RESTFul API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viktorpulbere/Cloud-Computing.git"
+  },
+  "author": "Victor PULBERE (viktor.pulbere@gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/viktorpulbere/Cloud-Computing/issues"
+  },
+  "homepage": "https://github.com/viktorpulbere/Cloud-Computing#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "dotenv": "~8.2.0",
+    "mongodb": "~3.5.4"
+  }
+}
