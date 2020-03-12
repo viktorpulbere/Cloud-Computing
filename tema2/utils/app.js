@@ -1,6 +1,19 @@
 'use strict';
 
 const http = require('http');
+const url = require('url');
+
+function getParamsNames(regexp, str) {
+    const array = [ ...str.matchAll(regexp) ];
+
+    return array.map(m => m[0].split(':')[1]);
+}
+
+function getFirstGroup(regexp, str) {
+    const array = [ ...str.matchAll(regexp) ];
+
+    return array[0];
+}
 
 class App {
     constructor() {
@@ -22,8 +35,8 @@ class App {
 
     listen(port=3000) {
         this.server = http.createServer((req, res) => {
+            const parsedUrl = url.parse(req.url);
             const method = req.method;
-            const path = `${method.toUpperCase()}_${req.url}`;
             const resApp = {
                 ... res,
                 json: (obj, statusCode=200) => {
@@ -37,10 +50,40 @@ class App {
                     res.end(JSON.stringify(obj));
                 }
             };
+            const reqApp = {
+                ... req,
+                query: parsedUrl.query
+            };
 
-            if (this.routes.hasOwnProperty(path)) {
-                return this.routes[path].handler(req, resApp);
+            if (['POST', 'PUT'].includes(method)) {
+                let body = [];
+
+                req
+                    .on('data', chunk => {
+                        body.push(chunk);
+                    })
+                    .on('end', () => {
+                        body = Buffer.concat(body).toString();
+                        reqApp.requestBody = body;
+                    });
             }
+
+            Object.keys(this.routes).forEach(path => {
+                const re = new RegExp(this.routes[path].path);
+
+                if (parsedUrl.pathname.match(re) && method === this.routes[path].method) {
+                    const matches = getFirstGroup(re, parsedUrl.pathname);
+                    const params = {};
+                    
+                    for (let i = 1; i < matches.length; i++) {
+                        params[this.routes[path].params[i - 1]] = matches[i];
+                    }
+
+                    resApp.params = params;
+
+                    return this.routes[path].handler(reqApp, resApp);
+                }
+            });
             
             resApp.json({
                 message: 'The required path does not exist!'
@@ -59,12 +102,17 @@ class Router {
     }
 
     assignHandler(method, path, handler) {
+        const pattern = /:[a-zA-Z0-0]+/g;
+        const matches = getParamsNames(pattern, path);
+        const pPath = path.replace(pattern, '([a-zA-Z0-0-]+)');
         const pth = `${method}_${path}`;
 
         if (!this.store.hasOwnProperty(pth)) {
             this.store[pth] = {
                 method,
-                handler
+                handler,
+                path: `${pPath}$`,
+                params: matches
             };
         }
     }

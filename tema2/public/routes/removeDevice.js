@@ -3,7 +3,7 @@
 const { Router } = require('../../utils/app');
 const router = new Router();
 
-router.get('/', (req, res) => {
+router.get('/devices/:id', (req, res) => {
     res.json({
         hello: 'World'
     });

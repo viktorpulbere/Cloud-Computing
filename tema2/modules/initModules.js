@@ -5,26 +5,18 @@ const { mongo } = require('../config');
 const shared = require('../utils/serviceVars');
 
 async function initMongo() {
-    return new Promise((resolve, reject) => {
-        MongoClient.connect(mongo.url, { useUnifiedTopology: true }, (err, client) => {
-            if (err) {
-                console.error(err.message);
+    const client = await MongoClient.connect(mongo.url, { useUnifiedTopology: true });
 
-                return reject(err);
-            }
-    
-            console.log("Connected successfully to mongo server");
-            shared.mongo = {};
-    
-            const db = client.db(mongo.db);
+    console.log("Connected successfully to mongo server");
+    shared.mongo = {};
 
-            Object.keys(mongo.collections).forEach(collectionName => {
-                shared.mongo[collectionName] = db.collection(mongo.collections[collectionName]);
-            });
-    
-            resolve();
-        });
+    const db = client.db(mongo.db);
+
+    Object.keys(mongo.collections).forEach(collectionName => {
+        shared.mongo[collectionName] = db.collection(mongo.collections[collectionName]);
     });
+
+    await db.collection('users').createIndex({ email: 1 }, { sparse: true, unique: true });
 }
 
 module.exports = async () => {
