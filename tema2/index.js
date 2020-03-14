@@ -2,7 +2,7 @@
 
 const { App } = require('./utils/app');
 const app = new App();
-const router = require('./public/routes/removeDevice');
+const router = require('./public/routes/users');
 const initModules = require('./modules/initModules');
 
 app.register(router);

@@ -15,6 +15,29 @@ function getFirstGroup(regexp, str) {
     return array[0];
 }
 
+async function parseBody(req, reqApp, method) {
+    return new Promise((resolve, reject) => {
+        let body = [];
+
+        req
+            .on('data', chunk => {
+                body.push(chunk);
+            })
+            .on('end', () => {
+                body = Buffer.concat(body).toString();
+
+                if (body && body.indexOf('{') !== -1) {
+                    reqApp.body = JSON.parse(body);
+                }
+
+                resolve();
+            })
+            .on('error', () => {
+                reject();
+            });
+    });
+}
+
 class App {
     constructor() {
         this.routes = {};
@@ -43,7 +66,7 @@ class App {
                     if (!(obj instanceof Object)) {
                         throw new Error('Invalid object');
                     }
-
+                
                     res.writeHead(statusCode, { 
                         'Content-type': 'application/json' 
                     });
@@ -54,40 +77,32 @@ class App {
                 ... req,
                 query: parsedUrl.query
             };
+            let exists = 0;
 
-            if (['POST', 'PUT'].includes(method)) {
-                let body = [];
-
-                req
-                    .on('data', chunk => {
-                        body.push(chunk);
-                    })
-                    .on('end', () => {
-                        body = Buffer.concat(body).toString();
-                        reqApp.requestBody = body;
-                    });
-            }
-
-            Object.keys(this.routes).forEach(path => {
-                const re = new RegExp(this.routes[path].path);
-
-                if (parsedUrl.pathname.match(re) && method === this.routes[path].method) {
+            Object.keys(this.routes).forEach(async path => {
+                const re = this.routes[path].path;
+                
+                if (parsedUrl.pathname.match(re) && this.routes[path].method.includes(method)) {
                     const matches = getFirstGroup(re, parsedUrl.pathname);
+                    const methodIdx = this.routes[path].method.indexOf(method);
                     const params = {};
+                    exists = 1;
                     
                     for (let i = 1; i < matches.length; i++) {
                         params[this.routes[path].params[i - 1]] = matches[i];
                     }
 
                     resApp.params = params;
-
-                    return this.routes[path].handler(reqApp, resApp);
+                    await parseBody(req, reqApp, method);
+                    return this.routes[path].handler[methodIdx](reqApp, resApp);
                 }
             });
-            
-            resApp.json({
-                message: 'The required path does not exist!'
-            }, 404);
+
+            if (!exists) {
+                resApp.json({
+                    message: 'The required path does not exist!'
+                }, 404);
+            }
         });
 
         this.server.listen(port, () => {
@@ -105,15 +120,21 @@ class Router {
         const pattern = /:[a-zA-Z0-0]+/g;
         const matches = getParamsNames(pattern, path);
         const pPath = path.replace(pattern, '([a-zA-Z0-0-]+)');
-        const pth = `${method}_${path}`;
 
-        if (!this.store.hasOwnProperty(pth)) {
-            this.store[pth] = {
-                method,
-                handler,
-                path: `${pPath}$`,
+        if (!this.store.hasOwnProperty(pPath)) {
+            this.store[pPath] = {
+                method: [method],
+                handler: [handler],
+                path: new RegExp(`${pPath}$`),
                 params: matches
             };
+
+            return;
+        }
+
+        if (this.store.hasOwnProperty(pPath) && !this.store[pPath].method.includes(method)) {
+            this.store[pPath].method.push(method);
+            this.store[pPath].handler.push(handler);
         }
     }
 
