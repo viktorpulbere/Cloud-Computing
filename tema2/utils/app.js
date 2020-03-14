@@ -92,7 +92,7 @@ class App {
                         params[this.routes[path].params[i - 1]] = matches[i];
                     }
 
-                    resApp.params = params;
+                    reqApp.params = params;
                     await parseBody(req, reqApp, method);
                     return this.routes[path].handler[methodIdx](reqApp, resApp);
                 }
@@ -119,7 +119,7 @@ class Router {
     assignHandler(method, path, handler) {
         const pattern = /:[a-zA-Z0-0]+/g;
         const matches = getParamsNames(pattern, path);
-        const pPath = path.replace(pattern, '([a-zA-Z0-0-]+)');
+        const pPath = path.replace(pattern, '([a-zA-Z0-9-]+)');
 
         if (!this.store.hasOwnProperty(pPath)) {
             this.store[pPath] = {
