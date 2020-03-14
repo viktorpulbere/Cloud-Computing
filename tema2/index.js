@@ -2,10 +2,12 @@
 
 const { App } = require('./utils/app');
 const app = new App();
-const router = require('./public/routes/users');
+const userRouter = require('./public/routes/users');
+const deviceRouter = require('./public/routes/devices');
 const initModules = require('./modules/initModules');
 
-app.register(router);
+app.register(userRouter);
+app.register(deviceRouter);
 
 async function start() {
     try {

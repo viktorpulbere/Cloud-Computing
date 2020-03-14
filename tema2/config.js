@@ -7,7 +7,8 @@ module.exports = {
         url: process.env.MONGO_URL,
         db: 'tema2',
         collections: {
-            'users': 'users'
+            'users': 'users',
+            'devices': 'devices'
         }
     }
 };
