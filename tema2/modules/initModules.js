@@ -17,6 +17,7 @@ async function initMongo() {
     });
 
     await db.collection('users').createIndex({ email: 1 }, { sparse: true, unique: true });
+    await db.collection('devices').createIndex({ userId: 1 });
 }
 
 module.exports = async () => {

@@ -5,6 +5,7 @@ const router = new Router();
 const shared = require('../../utils/serviceVars');
 const schema = require('../../schema');
 const tv4 = require('tv4');
+const _ = require('lodash');
 const { ObjectID } = require('mongodb');
 
 router.post('/users', async (req, res) => {
@@ -13,7 +14,7 @@ router.post('/users', async (req, res) => {
 
         if (!tv4.validate(userInfo, schema.user)) {
             return res.json({
-                message: 'Request is not valid'
+                message: 'Invalid request'
             }, 422);
         }
 
@@ -40,7 +41,7 @@ router.post('/users/:id', async (req, res) => {
 
         if (!tv4.validate(userInfo, schema.user) || !tv4.validate(id, schema.ID)) {
             return res.json({
-                message: 'Request is not valid'
+                message: 'Invalid request'
             }, 422);
         }
 
@@ -60,6 +61,71 @@ router.post('/users/:id', async (req, res) => {
             return res.json({ message }, 409);
         }
         
+        res.json({
+            message: 'Internal Server Error'
+        }, 500);
+    }
+});
+
+router.get('/users/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        if (!tv4.validate(userId, schema.ID)) {
+            return res.json({
+                message: 'Invalid request'
+            }, 422);
+        }
+
+        const user = await shared.mongo.users.findOne({ 
+            _id: ObjectID(userId) 
+        }, { 
+            projection: { _id: 0, job: 0 } 
+        });
+
+        if (user === null) {
+            res.json({
+                message: 'User not found'
+            }, 404);
+        }
+
+        res.json(user, 200);
+    } catch (err) {
+        res.json({
+            message: 'Internal Server Error'
+        }, 500);
+    }
+});
+
+router.get('/users', async (req, res) => {
+    try {
+        const querystring = req.querystring;
+        const page = parseInt(
+            _.get(querystring, 'page', 1)
+        );
+        let pageLimit = parseInt(
+            _.get(querystring, 'limit', 10)
+        );
+
+        if (page < 0 || pageLimit < 0) {
+            return res.json({
+                message: 'Bad request'
+            }, 400);
+        }
+
+        if (pageLimit > 100) {
+            pageLimit = 100;
+        }
+
+        const users = await shared.mongo.users
+            .find({}, { projection: { _id: 0, job: 0 } })
+            .skip(pageLimit * (page - 1))
+            .limit(pageLimit)
+            .toArray();
+            
+        res.json(users, 200);
+    } catch (err) {
+        console.log(err)
         res.json({
             message: 'Internal Server Error'
         }, 500);

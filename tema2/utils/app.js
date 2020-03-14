@@ -2,6 +2,7 @@
 
 const http = require('http');
 const url = require('url');
+const queryString = require('query-string');
 
 function getParamsNames(regexp, str) {
     const array = [ ...str.matchAll(regexp) ];
@@ -75,7 +76,9 @@ class App {
             };
             const reqApp = {
                 ... req,
-                query: parsedUrl.query
+                querystring: queryString.parse(
+                    parsedUrl.search
+                )
             };
             let exists = 0;
 
@@ -146,12 +149,16 @@ class Router {
         this.assignHandler('POST', path, callback);
     }
 
-    delete() {
+    delete(path, callback) {
         this.assignHandler('DELETE', path, callback);
     }
 
-    put() {
+    put(path, callback) {
         this.assignHandler('PUT', path, callback);
+    }
+
+    patch(path, callback) {
+        this.assignHandler('PATCH', path, callback);
     }
 }
 

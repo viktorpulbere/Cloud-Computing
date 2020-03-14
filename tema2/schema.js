@@ -24,13 +24,12 @@ module.exports = {
                 type: 'string',
                 pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
             },
-            job: {
+            status: {
                 type: 'string',
-                minLength: 3,
-                maxLength: 10
+                enum: ['student', 'employee']
             }
         },
-        required: ['firstName', 'lastName', 'email', 'job']
+        required: ['firstName', 'lastName', 'email', 'status']
     },
     device: {
         type: 'object',
