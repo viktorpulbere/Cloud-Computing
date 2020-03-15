@@ -77,5 +77,16 @@ module.exports = {
         }, {
             required: ['name']
         }]
+    },
+    updateDevices: {
+        type: 'object',
+        properties: {
+            status: {
+                type: 'number',
+                enum: [1, 0]
+            }
+        },
+        additionalProperties: false,
+        required: ['status']
     }
 };

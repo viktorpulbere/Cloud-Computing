@@ -125,7 +125,6 @@ router.get('/users', async (req, res) => {
             
         res.json(users, 200);
     } catch (err) {
-        console.log(err)
         res.json({
             message: 'Internal Server Error'
         }, 500);

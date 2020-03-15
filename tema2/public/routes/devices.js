@@ -147,4 +147,42 @@ router.patch('/users/:userId/devices/:deviceId', async (req, res) => {
     }
 });
 
+router.patch('/users/:userId/devices', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const updateExpression = req.body;
+
+        if (!tv4.validate(userId, schema.ID)) {
+            return res.json({
+                message: 'Invalid request'
+            }, 422);
+        }
+
+        if (!tv4.validate(updateExpression, schema.updateDevices)) {
+            return res.json({
+                message: 'Not allowed'
+            }, 405);
+        }
+
+        const user = await shared.mongo.users.findOne({ _id: ObjectID(userId) });
+        
+        if (user === null) {
+            return res.json({ 
+                message: 'User not found' 
+            }, 404);
+        }
+        
+        const result = await shared.mongo.devices.updateMany({ userId }, { $set: updateExpression });
+
+        res.json({
+            matched: result.matchedCount,
+            modified: result.modifiedCount 
+        }, 200);
+    } catch (err) {
+        res.json({
+            message: 'Internal Server Error'
+        }, 500);
+    }
+});
+
 module.exports = router;
