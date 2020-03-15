@@ -99,4 +99,52 @@ router.delete('/users/:userId/devices/:deviceId', async (req, res) => {
     }
 });
 
+router.patch('/users/:userId/devices/:deviceId', async (req, res) => {
+    try {
+        const { userId, deviceId } = req.params;
+        const updateExpression = req.body;
+
+        if (!tv4.validate(userId, schema.ID) || !tv4.validate(deviceId, schema.ID)) {
+            return res.json({
+                message: 'Invalid request'
+            }, 422);
+        }
+
+        if (!tv4.validate(updateExpression, schema.updateDevice)) {
+            return res.json({
+                message: 'Not allowed'
+            }, 405);
+        }
+
+        const user = await shared.mongo.users.findOne({ _id: ObjectID(userId) });
+        
+        if (user === null) {
+            return res.json({ 
+                message: 'User not found' 
+            }, 404);
+        }
+        
+        const result = await shared.mongo.devices.updateOne({ 
+            userId, 
+            _id: ObjectID(deviceId) 
+        }, { 
+            $set: updateExpression 
+        });
+
+        if (!result.matchedCount) {
+            return res.json({ 
+                message: 'Device not found' 
+            }, 404); 
+        }
+
+        res.json({
+            success: 1
+        }, 200);
+    } catch (err) {
+        res.json({
+            message: 'Internal Server Error'
+        }, 500);
+    }
+});
+
 module.exports = router;

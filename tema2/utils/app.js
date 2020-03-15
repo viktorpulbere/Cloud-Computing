@@ -27,11 +27,17 @@ async function parseBody(req, reqApp, method) {
             .on('end', () => {
                 body = Buffer.concat(body).toString();
 
-                if (body && body.indexOf('{') !== -1) {
-                    reqApp.body = JSON.parse(body);
-                }
+                try {
+                    if (body && body.indexOf('{') !== -1) {
+                        reqApp.body = JSON.parse(body);
+                    }
+    
+                    resolve();
+                } catch (err) {
+                    console.error('Could not parse body');
 
-                resolve();
+                    resolve();
+                }
             })
             .on('error', () => {
                 reject();

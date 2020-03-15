@@ -26,28 +26,56 @@ module.exports = {
             },
             status: {
                 type: 'string',
-                enum: ['student', 'employee']
+                enum: [
+                    'student', 'employee'
+                ]
             }
         },
-        required: ['firstName', 'lastName', 'email', 'status']
+        required: [
+            'firstName', 'lastName', 'email', 'status'
+        ]
     },
     device: {
         type: 'object',
         properties: {
             type: {
                 type: 'string',
-                enum: ['PC', 'PHONE', 'MAC', 'TV']
+                enum: [
+                    'PC', 'PHONE', 'MAC', 'TV'
+                ]
             },
             name: {
                 type: 'string',
                 minLength: 3,
-                maxLength: 10
+                maxLength: 20
             },
             status: {
                 type: 'number',
                 enum: [1, 0]
             }
         },
-        required: ['type', 'status']
+        required: [
+            'type', 'status'
+        ]
+    },
+    updateDevice: {
+        type: 'object',
+        properties: {
+            name: {
+                type: 'string',
+                minLength: 3,
+                maxLength: 20
+            },
+            status: {
+                type: 'number',
+                enum: [1, 0]
+            }
+        },
+        additionalProperties: false,
+        anyOf: [{
+            required: ['status']
+        }, {
+            required: ['name']
+        }]
     }
 };
