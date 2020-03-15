@@ -247,7 +247,7 @@ router.get('/users/:userId/devices', async (req, res) => {
         }
 
         const devices = await shared.mongo.devices
-            .find(query, { projection: { _id: 0, userId: 0, lastUpdate: 0 } })
+            .find(query, { projection: { userId: 0, lastUpdate: 0 } })
             .skip(pageLimit * (page - 1))
             .limit(pageLimit)
             .toArray();
