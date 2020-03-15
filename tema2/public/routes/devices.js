@@ -275,4 +275,77 @@ router.get('/users/:userId/devices', async (req, res) => {
     }
 });
 
+router.put('/users/:userId/devices', async (req, res) => {
+    try {
+        let devices = req.body;
+        const { userId } = req.params;
+
+        if (!tv4.validate(devices, schema.putDevices) || !tv4.validate(userId, schema.ID)) {
+            return res.json({
+                message: tv4.error.message
+            }, 422);
+        }
+
+        const user = await shared.mongo.users.findOne({ _id: ObjectID(userId) });
+        
+        if (user === null) {
+            return res.json({ 
+                message: 'User not found' 
+            }, 404);
+        }
+
+        devices = devices.map(device => ({ ... device, userId, lastUpdate: Date.now() }));
+
+        await shared.mongo.devices.deleteMany({ userId });
+        const { insertedCount, ops } = await shared.mongo.devices.insertMany(devices);
+
+        res.json({
+            insertedCount,
+            devices: ops.map(device => ({ id: device._id }))
+        }, 200);
+    } catch (err) {
+        res.json({
+            message: 'Internal Server Error'
+        }, 500);
+    }
+});
+
+
+router.put('/users/:userId/devices/:deviceId', async (req, res) => {
+    try {
+        const updateBody = req.body;
+        const { userId, deviceId } = req.params;
+
+        if (!tv4.validate(deviceId, schema.ID) || !tv4.validate(userId, schema.ID) || !tv4.validate(updateBody, schema.device)) {
+            return res.json({
+                message: tv4.error.message
+            }, 422);
+        }
+
+        const user = await shared.mongo.users.findOne({ _id: ObjectID(userId) });
+        
+        if (user === null) {
+            return res.json({ 
+                message: 'User not found' 
+            }, 404);
+        }
+
+        const result = await shared.mongo.devices.updateOne({ userId, _id: ObjectID(deviceId) }, { $set: updateBody });
+
+        if (!result.matchedCount) {
+            return res.json({
+                message: 'Device not found'
+            }, 404);
+        }
+
+        res.json({
+            success: 1
+        }, 200);
+    } catch (err) {
+        res.json({
+            message: 'Internal Server Error'
+        }, 500);
+    }
+});
+
 module.exports = router;

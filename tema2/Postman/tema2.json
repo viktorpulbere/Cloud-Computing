@@ -265,6 +265,64 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Replace the device list (Collection)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users/5e6d4df94b49c40b900dd43b/devices",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"5e6d4df94b49c40b900dd43b",
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Replace/update a specific device (Resource) ",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users/5e6d4df94b49c40b900dd43b/devices",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"5e6d4df94b49c40b900dd43b",
+						"devices"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}

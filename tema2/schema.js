@@ -4,9 +4,33 @@ const ID = {
     type: 'string',
     pattern: /^[0-9a-fA-F]{24}$/
 };
+const device = {
+    type: 'object',
+    properties: {
+        type: {
+            type: 'string',
+            enum: [
+                'PC', 'PHONE', 'MAC', 'TV'
+            ]
+        },
+        name: {
+            type: 'string',
+            minLength: 3,
+            maxLength: 20
+        },
+        status: {
+            type: 'number',
+            enum: [1, 0]
+        }
+    },
+    required: [
+        'type', 'status'
+    ]
+};
 
 module.exports = {
     ID: ID,
+    device: device,
     user: {
         type: 'object',
         properties: {
@@ -33,29 +57,6 @@ module.exports = {
         },
         required: [
             'firstName', 'lastName', 'email', 'status'
-        ]
-    },
-    device: {
-        type: 'object',
-        properties: {
-            type: {
-                type: 'string',
-                enum: [
-                    'PC', 'PHONE', 'MAC', 'TV'
-                ]
-            },
-            name: {
-                type: 'string',
-                minLength: 3,
-                maxLength: 20
-            },
-            status: {
-                type: 'number',
-                enum: [1, 0]
-            }
-        },
-        required: [
-            'type', 'status'
         ]
     },
     updateDevice: {
@@ -88,5 +89,9 @@ module.exports = {
         },
         additionalProperties: false,
         required: ['status']
+    },
+    putDevices: {
+        type: 'array',
+        items: device
     }
 };
