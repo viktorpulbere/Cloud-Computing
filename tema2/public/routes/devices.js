@@ -45,6 +45,11 @@ router.post('/users/:userId/devices', async (req, res) => {
 router.delete('/users/:userId/devices', async (req, res) => {
     try {
         const { userId } = req.params;
+        const querystring = req.querystring;
+        const status = parseInt(
+            _.get(querystring, 'status', -1)
+        );
+        const type = _.get(querystring, 'type', null);
 
         if (!tv4.validate(userId, schema.ID)) {
             return res.json({
@@ -59,8 +64,18 @@ router.delete('/users/:userId/devices', async (req, res) => {
                 message: 'User not found' 
             }, 404);
         }
+
+        const query = { userId };
         
-        const { deletedCount } = await shared.mongo.devices.deleteMany({ userId });
+        if (status != -1) {
+            query.status = status;
+        }
+
+        if (type) {
+            query.type = type;
+        }
+
+        const { deletedCount } = await shared.mongo.devices.deleteMany(query);
 
         res.json({ deletedCount }, 200);
     } catch (err) {

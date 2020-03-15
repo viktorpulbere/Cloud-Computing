@@ -1,0 +1,271 @@
+{
+	"info": {
+		"_postman_id": "49244121-1a5b-4986-94c8-38a2defa78cd",
+		"name": "tema2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User (Collection)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"nitoko4646@mailernam.com\",\n\t\"firstName\": \"Renee\",\n\t\"lastName\": \"Howell\",\n\t\"status\": \"student\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User (Resource)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"nitoko4646@mailernam.com\",\n\t\"firstName\": \"Renee\",\n\t\"lastName\": \"Howell\",\n\t\"status\": \"student\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users/5e6d4df94b49c40b900dd43b",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"5e6d4df94b49c40b900dd43b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create device (Collection)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"type\": \"PHONE\",\n\t\"status\": 0,\n\t\"name\": \"IPhone X MAX\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users/5e6d4df94b49c40b900dd43b/devices",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"5e6d4df94b49c40b900dd43b",
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove all user devices (Collection)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/users/5e6e3352deda01c0b01ccd32/devices",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"5e6e3352deda01c0b01ccd32",
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove a specific device (Resource)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/users/5e6e3352deda01c0b01ccd32/devices/5e6e3364deda01c0b01ccd33",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"5e6e3352deda01c0b01ccd32",
+						"devices",
+						"5e6e3364deda01c0b01ccd33"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user info (Resource)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/users/5e6e3352deda01c0b01ccd32",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"5e6e3352deda01c0b01ccd32"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a list of users (Collection)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/users?page=1&limit=10",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user devices (Collection)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/users/5e6e3352deda01c0b01ccd32/devices?page=1&limit=10",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"5e6e3352deda01c0b01ccd32",
+						"devices"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a specific device (Resource)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\": 0,\n\t\"name\": \"My Iphone\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users/5e6e3352deda01c0b01ccd32/devices/5e6d6bb0c63ef98314fd6f1b",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"5e6e3352deda01c0b01ccd32",
+						"devices",
+						"5e6d6bb0c63ef98314fd6f1b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a list of devices (Collection)",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users/5e6d4df94b49c40b900dd43b/devices",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"5e6d4df94b49c40b900dd43b",
+						"devices"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
