@@ -17,7 +17,7 @@ router.post('/users/:userId/devices', async (req, res) => {
 
         if (!tv4.validate(deviceInfo, schema.device) || !tv4.validate(userId, schema.ID)) {
             return res.json({
-                message: 'Invalid request'
+                message: tv4.error.message
             }, 422);
         }
 
@@ -53,7 +53,7 @@ router.delete('/users/:userId/devices', async (req, res) => {
 
         if (!tv4.validate(userId, schema.ID)) {
             return res.json({
-                message: 'Invalid request'
+                message: tv4.error.message
             }, 422);
         }
 
@@ -91,7 +91,7 @@ router.delete('/users/:userId/devices/:deviceId', async (req, res) => {
 
         if (!tv4.validate(userId, schema.ID) || !tv4.validate(deviceId, schema.ID)) {
             return res.json({
-                message: 'Invalid request'
+                message: tv4.error.message
             }, 422);
         }
 
@@ -126,7 +126,7 @@ router.patch('/users/:userId/devices/:deviceId', async (req, res) => {
 
         if (!tv4.validate(userId, schema.ID) || !tv4.validate(deviceId, schema.ID)) {
             return res.json({
-                message: 'Invalid request'
+                message: tv4.error.message 
             }, 422);
         }
 
@@ -177,7 +177,7 @@ router.patch('/users/:userId/devices', async (req, res) => {
 
         if (!tv4.validate(userId, schema.ID)) {
             return res.json({
-                message: 'Invalid request'
+                message: tv4.error.message
             }, 422);
         }
 
@@ -240,7 +240,7 @@ router.get('/users/:userId/devices', async (req, res) => {
 
         if (!tv4.validate(userId, schema.ID)) {
             return res.json({
-                message: 'Invalid request'
+                message: tv4.error.message 
             }, 422);
         }
 

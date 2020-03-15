@@ -16,7 +16,7 @@ router.post('/users', async (req, res) => {
 
         if (!tv4.validate(userInfo, schema.user)) {
             return res.json({
-                message: 'Invalid request'
+                message: tv4.error.message
             }, 422);
         }
 
@@ -43,7 +43,7 @@ router.post('/users/:id', async (req, res) => {
 
         if (!tv4.validate(userInfo, schema.user) || !tv4.validate(id, schema.ID)) {
             return res.json({
-                message: 'Invalid request'
+                message: tv4.error.message
             }, 422);
         }
 
@@ -75,7 +75,7 @@ router.get('/users/:id', async (req, res) => {
 
         if (!tv4.validate(userId, schema.ID)) {
             return res.json({
-                message: 'Invalid request'
+                message: tv4.error.message
             }, 422);
         }
 
