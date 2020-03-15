@@ -1,6 +1,7 @@
 'use strict';
 
 const { MongoClient } = require('mongodb');
+
 const { mongo } = require('../config');
 const shared = require('../utils/serviceVars');
 

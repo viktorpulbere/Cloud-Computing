@@ -1,11 +1,13 @@
 'use strict';
 
 const { Router } = require('../../utils/app');
-const router = new Router();
 const shared = require('../../utils/serviceVars');
 const schema = require('../../schema');
-const tv4 = require('tv4');
+
 const { ObjectID } = require('mongodb');
+const tv4 = require('tv4');
+
+const router = new Router();
 
 router.post('/users/:userId/devices', async (req, res) => {
     try {
