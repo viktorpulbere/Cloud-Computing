@@ -202,7 +202,6 @@ router.get('/users/:userId/devices', async (req, res) => {
     try {
         const querystring = req.querystring;
         const { userId } = req.params;
-        const query = {};
         const page = parseInt(
             _.get(querystring, 'page', 1)
         );
@@ -224,6 +223,12 @@ router.get('/users/:userId/devices', async (req, res) => {
             pageLimit = 100;
         }
 
+        if (!tv4.validate(userId, schema.ID)) {
+            return res.json({
+                message: 'Invalid request'
+            }, 422);
+        }
+
         const user = await shared.mongo.users.findOne({ _id: ObjectID(userId) });
         
         if (user === null) {
@@ -231,7 +236,8 @@ router.get('/users/:userId/devices', async (req, res) => {
                 message: 'User not found' 
             }, 404);
         }
-
+        
+        const query = { userId };
         if (status != -1) {
             query.status = status;
         }
