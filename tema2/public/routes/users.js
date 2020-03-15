@@ -120,7 +120,7 @@ router.get('/users', async (req, res) => {
         }
 
         const users = await shared.mongo.users
-            .find({}, { projection: { _id: 0, job: 0 } })
+            .find({}, { projection: { job: 0 } })
             .skip(pageLimit * (page - 1))
             .limit(pageLimit)
             .toArray();
