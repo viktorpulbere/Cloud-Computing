@@ -1,0 +1,35 @@
+<div class="wrapper-table">
+    <div class="table-pagination">
+        <table class="table table-striped table-custom">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Product Description</th>
+                    <th scope="col">Pick</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let country of countries">
+                    <th scope="row">{{ country.id }}</th>
+                    <td>{{ country.source }}</td>
+                    <td>{{ country.productName || 'New Product' }}</td>
+                    <td>{{ country.productDescription || 'No description'}}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" (click)="pick(country.productId)">
+                            Pick
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between p-2">
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="pageChanged($event)">
+                <ng-template ngbPaginationPrevious ()>Prev</ng-template>
+                <ng-template ngbPaginationNext>Next</ng-template>
+            </ngb-pagination>
+        </div>
+    </div>
+</div>
