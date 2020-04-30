@@ -11,5 +11,6 @@ In our web application, we used Azure cloud services such as:
 - Microsoft Azure Authentication
 - Azure VM
 - Azure Geocoding Service
-- Azure Cache for Redis
+- Azure Cache for Redis 
+
 https://open-trade-client.northeurope.cloudapp.azure.com/
