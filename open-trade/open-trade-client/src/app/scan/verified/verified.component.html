@@ -1,0 +1,8 @@
+<div style="display: flex; justify-content: center;">
+    <div class="circle-loader" [ngClass]="{'load-complete': success == true}">
+        <div class="draw checkmark" [ngStyle]="{'display': success == true ? 'block': 'none'}" [ngClass]="{'draw': success == true}"></div>
+    </div>
+    <span style="line-height: 1.5em; vertical-align: middle; margin-left: 10px;">
+        Verified by blockchain
+    </span>
+</div>

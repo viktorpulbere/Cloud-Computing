@@ -1,0 +1,21 @@
+.wrapper-table {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.table-pagination {
+    width: 50%;
+    margin-left: 100px;
+}
+
+.card-style-home {
+    width: 350px;
+    margin-bottom: 50px;
+    margin-top: 10px;
+    button {
+        margin-top: 20px;
+    }
+}

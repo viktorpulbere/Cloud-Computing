@@ -34,4 +34,12 @@ contract OpenTrade {
         Transaction memory lastTransaction = transactions[transactions.length-1];
         return (lastTransaction.destination, lastTransaction.hash);
     }
+
+    function getTransaction(string memory productKey, uint index) public view returns (string memory,string memory) {
+        Transaction[] memory transactions = products[productKey].transactions;
+        if (transactions.length==0 || transactions.length<=index){
+            return ('','');
+        }
+        return (transactions[index].destination,transactions[index].hash);
+    }
 }

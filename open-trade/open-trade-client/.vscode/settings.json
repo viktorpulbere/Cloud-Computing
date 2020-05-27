@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/d09ffedd-d54f-4c3c-9eeb-bb46745a1a96/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/opentrade",
+    "appService.deploySubpath": ""
+}

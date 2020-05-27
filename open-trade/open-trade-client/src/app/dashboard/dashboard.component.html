@@ -1,0 +1,59 @@
+<div class="wrapper-table">
+    <div class="table-pagination">
+        <table class="table table-striped table-custom">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Product Description</th>
+                    <th scope="col">Pick</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let country of countries">
+                    <th scope="row">{{ country.id }}</th>
+                    <td>{{ country.source }}</td>
+                    <td>{{ country.productName || 'New Product' }}</td>
+                    <td>{{ country.productDescription || 'No description'}}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" (click)="pick(country.productId)">
+                            Pick
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between p-2">
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="pageChanged($event)">
+                <ng-template ngbPaginationPrevious ()>Prev</ng-template>
+                <ng-template ngbPaginationNext>Next</ng-template>
+            </ngb-pagination>
+        </div>
+    </div>
+    <div class="card card-style-home">
+        <div class="card-header">
+            Rate service
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Rate distributor</h5>
+            <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
+                <div class="form-group">
+                    <label for="name">Source</label>
+                    <input type="text" formControlName="source" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter source email">
+                    <!-- <small id="nameHelp" class="form-text text-muted">We'll never share your name with anyone else.</small> -->
+                </div>
+                <div class="form-group">
+                    <label for="description">Feedback</label>
+                    <input type="text" formControlName="feedback" class="form-control" id="description" aria-describedby="descriptionHelp" placeholder="Enter feedback">
+                    <!-- <small id="descriptionHelp" class="form-text text-muted">We'll never share your description with anyone else.</small> -->
+                </div>
+                <label for="description">Stars</label>
+                <ngx-stars (ratingOutput)="onRatingSet($event)" [initialStars]="5" [readonly]="false"></ngx-stars>
+                <!-- <small id="descriptionHelp" class="form-text text-muted">We'll never share your description with anyone else.</small> -->
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

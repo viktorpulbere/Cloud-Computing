@@ -1,0 +1,12 @@
+{
+    "stsServer": "https://login.microsoftonline.com/c979dd39-732a-472c-844d-604243ce5b3c/v2.0",
+    "redirect_url": "http://localhost:4200/callback",
+    "client_id": "79db3faf-4b80-4354-b0af-277b0f4ee355",
+    "response_type": "id_token token",
+    "scope": "openid email profile",
+    "post_logout_redirect_uri": "",
+    "post_login_route": "/create",
+    "forbidden_route": "/forbidden",
+    "unauthorized_route": "/unauthorized",
+    "log_console_debug_active": false
+}

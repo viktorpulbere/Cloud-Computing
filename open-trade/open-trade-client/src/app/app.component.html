@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg bg-light navbar-dark bg-dark">
+    <a class="navbar-brand">Open Trade</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <i class="fas fa-home"></i>
+                <a class="nav-link" [routerLink]="['/home']">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <i class="far fa-plus-square"></i>
+                <a class="nav-link" [routerLink]="['/create']">Manage my goods</a>
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-columns"></i>
+                <a class="nav-link" [routerLink]="['/dashboard']">Pending arrival</a>
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-map-marked-alt"></i>
+                <a class="nav-link" [routerLink]="['/map']">Map</a>
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-qrcode"></i>
+                <a class="nav-link" [routerLink]="['/scan']">Scan</a>
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-star"></i>
+                <a class="nav-link" [routerLink]="['/rating']">Global ratings</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <button class="btn btn-sm btn-outline-success" type="button" (click)="login()" *ngIf="!isAuthenticated">Sign in with Microsoft</button>
+        </form>
+        <form>
+            <div *ngIf="isAuthenticated" class="form-inline my-2 my-lg-0">
+                <div class="about-user mr-sm-2" style="font-size: 16px; color: rgba(255,255,255,.5);">
+                    You are login with <i>{{userData['email']}}</i>
+                </div>
+                <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button" (click)="logout()">Sign out</button>
+            </div>
+        </form>
+    </div>
+</nav>
+
+<ngx-notifier [allowHTML]="false" [duration]="30000" [insertOnTop]="true" [max]="3">
+</ngx-notifier>
+
+
+<router-outlet></router-outlet>

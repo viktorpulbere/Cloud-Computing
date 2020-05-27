@@ -1,0 +1,48 @@
+<div class="wrapper-table" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="table-pagination">
+        <table class="table table-striped table-custom">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Star Rating</th>
+                    <th scope="col">See feedback</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let country of countries">
+                    <th scope="row">{{ country.id }}</th>
+                    <td>{{ country.email }}</td>
+                    <td>
+                        <ngx-stars (ratingOutput)="onRatingSet($event)" [readonly]="true" [initialStars]="country.avgRating"></ngx-stars>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary" (click)="refreshFeedback(country.email)"> Feedback</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between p-2">
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="pageChanged($event)">
+                <ng-template ngbPaginationPrevious ()>Prev</ng-template>
+                <ng-template ngbPaginationNext>Next</ng-template>
+            </ngb-pagination>
+        </div>
+    </div>
+
+    <div class="card" style="width: 75%;">
+        <div class="card-header">
+            Feedback
+        </div>
+        <div class="card-body">
+            <div *ngFor="let item of feedback" style="margin-bottom: 25px;">
+                <h6> Author: {{item.source}}</h6>
+                <div class="feedback">
+                    {{item.feedback}}
+                </div>
+                <ngx-stars [readonly]="false" [initialStars]="item.rating"></ngx-stars>
+            </div>
+        </div>
+    </div>
+</div>
